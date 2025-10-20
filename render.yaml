@@ -1,0 +1,33 @@
+services:
+  # Backend Service (Python/FastAPI)
+  - type: web
+    name: recruitment-backend
+    runtime: python
+    pythonVersion: '3.13' # 開発環境のバージョンに合わせます
+    rootDir: backend
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: SUPABASE_URL
+        sync: false # Renderのダッシュボードで設定
+      - key: SUPABASE_KEY
+        sync: false # Renderのダッシュボードで設定
+      - key: SECRET_KEY
+        generateValue: true # Renderが自動生成
+
+  # Frontend Service (React/Vite)
+  - type: static
+    name: recruitment-frontend
+    rootDir: frontend
+    buildCommand: "npm install && npm run build"
+    publishDir: "dist"
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: recruitment-backend
+          property: url
+      - key: VITE_SUPABASE_URL
+        sync: false # Renderのダッシュボードで設定
+      - key: VITE_SUPABASE_KEY
+        sync: false # Renderのダッシュボードで設定
