@@ -7,8 +7,8 @@ class Settings(BaseSettings):
     supabase_key: str = Field(..., env="SUPABASE_KEY")
 
     # Google Cloud
-    google_cloud_project_id: str = Field(..., env="GOOGLE_CLOUD_PROJECT_ID")
-    google_application_credentials: str = Field(..., env="GOOGLE_APPLICATION_CREDENTIALS")
+    google_cloud_project_id: Optional[str] = Field(None, env="GOOGLE_CLOUD_PROJECT_ID")
+    google_application_credentials: Optional[str] = Field(None, env="GOOGLE_APPLICATION_CREDENTIALS")
 
     # 評価設定
     default_skill_ratio: float = Field(0.2, env="DEFAULT_SKILL_RATIO")
