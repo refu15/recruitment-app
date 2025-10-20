@@ -7,8 +7,8 @@ services:
     startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
     envVars:
       - key: SUPABASE_URL
-        fromSecret: true
+        value: "YOUR_SUPABASE_URL_HERE" # Renderダッシュボードで実際のURLに上書きしてください
       - key: SUPABASE_KEY
-        fromSecret: true
+        value: "YOUR_SUPABASE_KEY_HERE" # Renderダッシュボードで実際のキーに上書きしてください
       - key: SECRET_KEY
-        generateValue: true
+        value: "YOUR_SECRET_KEY_HERE" # Renderダッシュボードで実際のキーに上書きしてください
