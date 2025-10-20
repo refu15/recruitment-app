@@ -15,19 +15,3 @@ services:
       - key: SECRET_KEY
         generateValue: true # Renderが自動生成
 
-  # Frontend Service (React/Vite)
-  - type: static_site
-    name: recruitment-frontend
-    rootDir: frontend
-    buildCommand: "npm install && npm run build"
-    publishDir: "dist"
-    envVars:
-      - key: VITE_API_URL
-        fromService:
-          type: web
-          name: recruitment-backend
-          property: url
-      - key: VITE_SUPABASE_URL
-        sync: false # Renderのダッシュボードで設定
-      - key: VITE_SUPABASE_KEY
-        sync: false # Renderのダッシュボードで設定
