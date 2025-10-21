@@ -12,7 +12,7 @@ app = FastAPI(
 # CORS設定
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001", "http://localhost:5173"],  # React開発サーバー
+    allow_origins=["http://localhost:3000", "http://localhost:3001", "http://localhost:5173", "https://recruitment-app-1-y4js.onrender.com"],  # React開発サーバー
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
