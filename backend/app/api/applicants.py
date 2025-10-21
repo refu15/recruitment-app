@@ -35,15 +35,18 @@ async def get_applicant(applicant_id: str):
     try:
         response = supabase.table("applicants").select("*").eq("id", applicant_id).single().execute()
 
+        response = supabase.table("applicants").select("*").eq("id", applicant_id).limit(1).execute()
+
         if not response.data:
             raise HTTPException(status_code=404, detail="Applicant not found")
 
-        return response.data
+        return response.data[0]
 
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"Error fetching applicant {applicant_id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {e}")
 
 @router.post("/", response_model=Applicant)
 async def create_applicant(applicant: ApplicantCreate):
