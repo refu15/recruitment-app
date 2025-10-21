@@ -33,7 +33,7 @@ async def get_applicants(
 async def get_applicant(applicant_id: str):
     """特定の応募者を取得"""
     try:
-        supabase = get_supabase()
+        response = supabase.table("applicants").select("*").eq("id", applicant_id).single().execute()
 
         if not response.data:
             raise HTTPException(status_code=404, detail="Applicant not found")
