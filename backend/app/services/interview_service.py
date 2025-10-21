@@ -9,7 +9,8 @@ import os
 
 class InterviewService:
     def __init__(self):
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = settings.google_application_credentials
+        if settings.google_application_credentials:
+            os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = settings.google_application_credentials
 
         # Vertex AI初期化
         vertexai.init(project=settings.google_cloud_project_id, location="us-central1")
