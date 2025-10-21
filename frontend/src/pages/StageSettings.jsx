@@ -15,7 +15,7 @@ import {
   CircularProgress,
   Alert,
 } from '@mui/material'
-import { stagesApi, criteriaApi } from '../lib/api.js'
+import { stagesApi, criteriaApi } from '@/lib/api.js'
 
 export default function StageSettings() {
   const [stages, setStages] = useState([])

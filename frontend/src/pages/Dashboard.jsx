@@ -13,7 +13,7 @@ import PeopleIcon from '@mui/icons-material/People'
 import AssessmentIcon from '@mui/icons-material/Assessment'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty'
-import { applicantsApi } from '../lib/api'
+import { applicantsApi } from '@/lib/api'
 
 export default function Dashboard() {
   const navigate = useNavigate()

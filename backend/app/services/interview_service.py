@@ -9,12 +9,15 @@ import os
 
 class InterviewService:
     def __init__(self):
-        if settings.google_application_credentials:
-            os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = settings.google_application_credentials
-
-        # Vertex AI初期化
-        vertexai.init(project=settings.google_cloud_project_id, location="us-central1")
-        self.model = GenerativeModel("gemini-1.5-flash")
+        self.model = None
+        if settings.google_cloud_project_id and settings.google_application_credentials:
+            try:
+                os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = settings.google_application_credentials
+                vertexai.init(project=settings.google_cloud_project_id, location="us-central1")
+                self.model = GenerativeModel("gemini-1.5-flash")
+            except Exception as e:
+                print(f"Vertex AIの初期化に失敗しました: {e}")
+                self.model = None
 
     async def generate_interview_questions(
         self,
@@ -33,6 +36,9 @@ class InterviewService:
         Returns:
             面接質問のリスト
         """
+        if not self.model:
+            print("Vertex AIが初期化されていないため、デフォルトの質問を返します。")
+            return self._get_default_questions()
 
         prompt = self._build_interview_prompt(applicant_data, evaluation, question_count)
 

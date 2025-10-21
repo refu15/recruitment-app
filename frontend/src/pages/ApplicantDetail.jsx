@@ -24,7 +24,7 @@ import {
   CardActions,
 } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { applicantsApi, evaluationApi, interviewApi, criteriaApi, stagesApi } from '../lib/api'
+import { applicantsApi, evaluationApi, interviewApi, criteriaApi, stagesApi } from '@/lib/api'
 
 const statusLabels = {
   pending: '保留中',

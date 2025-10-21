@@ -23,7 +23,7 @@ import {
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import DownloadIcon from '@mui/icons-material/Download'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { batchApi, criteriaApi } from '../lib/api'
+import { batchApi, criteriaApi } from '@/lib/api'
 
 export default function BatchUpload() {
   const [file, setFile] = useState(null)
