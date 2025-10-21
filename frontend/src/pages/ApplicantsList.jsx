@@ -19,7 +19,7 @@ import {
 } from '@mui/material'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import AddIcon from '@mui/icons-material/Add'
-import { applicantsApi } from '../src/lib/api'
+import { applicantsApi } from '../lib/api'
 
 const statusColors = {
   pending: 'warning',
