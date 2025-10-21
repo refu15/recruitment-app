@@ -16,7 +16,6 @@ class CalendarService:
                             （本番環境では環境変数から読み込む）
         """
         self.credentials_path = credentials_path or settings.google_application_credentials
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = self.credentials_path
 
     def create_interview_event(
         self,
@@ -86,7 +85,7 @@ class CalendarService:
                 'end_time': end_time.isoformat()
             }
 
-        except HttpError as error:
+        except (HttpError, Exception) as error:
             print(f'Calendar API エラー: {error}')
             return {
                 'success': False,
@@ -181,7 +180,7 @@ class CalendarService:
 
             return available_slots
 
-        except HttpError as error:
+        except (HttpError, Exception) as error:
             print(f'Calendar API エラー: {error}')
             return []
 
@@ -245,7 +244,7 @@ class CalendarService:
                 'event_link': updated_event.get('htmlLink')
             }
 
-        except HttpError as error:
+        except (HttpError, Exception) as error:
             print(f'Calendar API エラー: {error}')
             return {
                 'success': False,
@@ -281,7 +280,7 @@ class CalendarService:
                 'message': 'Event cancelled successfully'
             }
 
-        except HttpError as error:
+        except (HttpError, Exception) as error:
             print(f'Calendar API エラー: {error}')
             return {
                 'success': False,
@@ -295,6 +294,9 @@ class CalendarService:
         注意: 本番環境ではOAuth2フローを実装する必要があります
         現在はサービスアカウント認証を想定
         """
+        if not self.credentials_path:
+            raise Exception("Google Calendarの認証情報が設定されていません。")
+
         from google.oauth2 import service_account
 
         SCOPES = ['https://www.googleapis.com/auth/calendar']

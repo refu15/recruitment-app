@@ -9,11 +9,25 @@ import os
 
 class OCRService:
     def __init__(self):
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = settings.google_application_credentials
-        self.client = vision.ImageAnnotatorClient()
+        self.client = None
+        if settings.google_application_credentials:
+            try:
+                os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = settings.google_application_credentials
+                self.client = vision.ImageAnnotatorClient()
+            except Exception as e:
+                print(f"Google Vision APIの初期化に失敗しました: {e}")
+                self.client = None
 
     async def extract_text_from_pdf(self, pdf_path: str) -> Dict[str, Any]:
         """PDFからテキストを抽出"""
+        if not self.client:
+            return {
+                "text": "",
+                "confidence": 0.0,
+                "page_count": 0,
+                "success": False,
+                "error": "OCRサービスが初期化されていません。Google Cloudの認証情報を設定してください。"
+            }
         try:
             # PDFを画像に変換
             images = convert_from_path(pdf_path)
@@ -57,6 +71,13 @@ class OCRService:
 
     async def extract_text_from_image(self, image_path: str) -> Dict[str, Any]:
         """画像からテキストを抽出"""
+        if not self.client:
+            return {
+                "text": "",
+                "confidence": 0.0,
+                "success": False,
+                "error": "OCRサービスが初期化されていません。Google Cloudの認証情報を設定してください。"
+            }
         try:
             with io.open(image_path, 'rb') as image_file:
                 content = image_file.read()

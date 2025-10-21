@@ -10,11 +10,15 @@ import os
 
 class AIEvaluationService:
     def __init__(self):
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = settings.google_application_credentials
-
-        # Vertex AI初期化
-        vertexai.init(project=settings.google_cloud_project_id, location="us-central1")
-        self.model = GenerativeModel("gemini-1.5-flash")
+        self.model = None
+        if settings.google_cloud_project_id and settings.google_application_credentials:
+            try:
+                os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = settings.google_application_credentials
+                vertexai.init(project=settings.google_cloud_project_id, location="us-central1")
+                self.model = GenerativeModel("gemini-1.5-flash")
+            except Exception as e:
+                print(f"Vertex AIの初期化に失敗しました: {e}")
+                self.model = None
 
     async def evaluate_applicant(
         self,
@@ -23,6 +27,17 @@ class AIEvaluationService:
         mindset_ratio: float = None
     ) -> EvaluationResult:
         """応募者データを評価"""
+
+        if not self.model:
+            print("Vertex AIが初期化されていないため、評価をスキップします。")
+            return EvaluationResult(
+                skill_score=5.0,
+                mindset_score=5.0,
+                total_score=5.0,
+                skill_ratio=skill_ratio or settings.default_skill_ratio,
+                mindset_ratio=mindset_ratio or settings.default_mindset_ratio,
+                summary="AI評価は無効です。Google Cloudの認証情報を設定してください。"
+            )
 
         if skill_ratio is None:
             skill_ratio = settings.default_skill_ratio
